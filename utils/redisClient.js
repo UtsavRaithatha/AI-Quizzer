@@ -3,29 +3,41 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const redisClient = redis.createClient({
-  url: process.env.REDIS_URL,
-});
+let redisClient = null;
+let redisEnabled = false;
 
-redisClient.on("error", (err) => {
-  console.error("Redis error: ", err);
-});
+if (process.env.REDIS_URL) {
+  redisClient = redis.createClient({
+    url: process.env.REDIS_URL,
+  });
 
-redisClient.on("ready", () => {
-  console.log("Redis is ready");
-});
+  redisClient.on("error", (err) => {
+    console.error("Redis error: ", err);
+    redisEnabled = false;
+  });
 
-redisClient.on("end", () => {
-  console.log("Redis client disconnected");
-});
+  redisClient.on("ready", () => {
+    console.log("Redis is ready");
+    redisEnabled = true;
+  });
 
-(async () => {
-  try {
-    await redisClient.connect();
-    console.log("Redis client connected");
-  } catch (error) {
-    console.error("Failed to connect to Redis:", error);
-  }
-})();
+  redisClient.on("end", () => {
+    console.log("Redis client disconnected");
+    redisEnabled = false;
+  });
 
-module.exports = redisClient;
+  (async () => {
+    try {
+      await redisClient.connect();
+      console.log("Redis client connected");
+      redisEnabled = true;
+    } catch (error) {
+      console.error("Failed to connect to Redis:", error);
+      redisEnabled = false;
+    }
+  })();
+} else {
+  console.log("REDIS_URL not provided. Running without Redis caching.");
+}
+
+module.exports = { redisClient, redisEnabled };

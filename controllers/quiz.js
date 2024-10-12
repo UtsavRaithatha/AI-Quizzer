@@ -1,6 +1,6 @@
 const dotenv = require("dotenv");
 const Groq = require("groq-sdk");
-const redisClient = require("../utils/redisClient.js");
+const { redisClient, redisEnabled } = require("../utils/redisClient.js");
 
 dotenv.config();
 
@@ -83,17 +83,19 @@ const getQuiz = async (req, res) => {
     }
 
     let cachedQuiz;
-    try {
-      cachedQuiz = await redisClient.get(quizId);
-    } catch (error) {
-      console.error("Redis get error: ", error);
-    }
+    if (redisEnabled) {
+      try {
+        cachedQuiz = await redisClient.get(quizId);
+      } catch (error) {
+        console.error("Redis get error: ", error);
+      }
 
-    if (cachedQuiz) {
-      return res.json({
-        message: "Quiz retrieved successfully from cache.",
-        quiz: JSON.parse(cachedQuiz),
-      });
+      if (cachedQuiz) {
+        return res.json({
+          message: "Quiz retrieved successfully from cache.",
+          quiz: JSON.parse(cachedQuiz),
+        });
+      }
     }
 
     const quiz = await Quiz.findById(quizId);
@@ -109,10 +111,12 @@ const getQuiz = async (req, res) => {
       return rest;
     });
 
-    try {
-      await redisClient.set(quizId, JSON.stringify(quizWithoutHints));
-    } catch (error) {
-      console.error("Redis set error: ", error);
+    if (redisEnabled) {
+      try {
+        await redisClient.set(quizId, JSON.stringify(quizWithoutHints));
+      } catch (error) {
+        console.error("Redis set error: ", error);
+      }
     }
 
     res.json({
