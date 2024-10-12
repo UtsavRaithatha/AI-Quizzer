@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const path = require("path");
 
 const authRoutes = require("./routes/auth");
 const quizRoutes = require("./routes/quiz");
@@ -20,6 +21,12 @@ mongoose
   .catch((err) => {
     console.log("Error connecting to MongoDB", err);
   });
+
+app.use(express.static(path.join(__dirname, "public")));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 app.use("/auth", authRoutes);
 app.use("/quiz", authMiddleware, quizRoutes);

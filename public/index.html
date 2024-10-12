@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Quizzer</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      h1,
+      h2 {
+        color: #333;
+      }
+      ul {
+        list-style-type: disc;
+        margin-left: 20px;
+      }
+      a {
+        color: #1a73e8;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>AI Quizzer</h1>
+
+    <div class="section">
+      <h2>Deployed Backend</h2>
+      <p>
+        The backend is deployed on Render and can be accessed
+        <a href="https://ai-quizzer-1.onrender.com" target="_blank">here</a>.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>API Documentation</h2>
+      <p>
+        The Postman API documentation can be found
+        <a
+          href="https://documenter.getpostman.com/view/28333089/2sAXjRWq1j"
+          target="_blank"
+          >here</a
+        >.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>Features</h2>
+      <ul>
+        <li>
+          <strong>Generate Quiz</strong>: Create quizzes with custom parameters
+          using AI.
+        </li>
+        <li>
+          <strong>Submit Quiz</strong>: Submit answers for a quiz and receive
+          feedback.
+        </li>
+        <li>
+          <strong>Quiz History</strong>: Retrieve and filter the history of quiz
+          attempts.
+        </li>
+        <li><strong>Hints</strong>: Get hints for specific quiz questions.</li>
+        <li>
+          <strong>User Authentication</strong>: Register and log in users.
+        </li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Technologies Used</h2>
+      <ul>
+        <li>Node.js</li>
+        <li>Express.js</li>
+        <li>MongoDB</li>
+        <li>Redis (for caching)</li>
+        <li>Groq (for AI-based quiz generation)</li>
+        <li>JWT (for authentication)</li>
+      </ul>
+    </div>
+  </body>
+</html>
